@@ -29,11 +29,21 @@ dependency versions, test count, failures, errors and skips.
 - Wheel build and installed-package CLI smoke check, including a running-service
   scenario and offline verification.
 
+## GitHub Actions
+
+The published workflow runs the 35-test suite, a fresh six-scenario lab, and
+offline evidence verification on Ubuntu and Windows with Python 3.11 and 3.12.
+Each environment uploads its validation record and generated evidence as a
+workflow artifact.
+
+See the [initial source validation run](https://github.com/Scoston/tracebound/actions/runs/34353005400)
+and the [latest workflow results](https://github.com/Scoston/tracebound/actions/workflows/validate.yml)
+for job outcomes. The local `validation.json` records the pre-publication run;
+GitHub results are retained with their own commit and environment.
+
 ## Not yet executed
 
 - Live Microsoft Entra, Microsoft 365, or any other cloud-tenant test.
-- GitHub Actions on Ubuntu and Windows; the workflow is configured for Python
-  3.11 and 3.12 and becomes runnable after repository upload.
 - Independent external reproduction, a model-driven agent evaluation, production
   deployment testing, or enterprise-scale throughput measurements.
 

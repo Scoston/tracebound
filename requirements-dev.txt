@@ -1,0 +1,3 @@
+# Direct development dependencies validated for this release.
+cryptography==46.0.0
+jsonschema==4.26.0

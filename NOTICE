@@ -1,0 +1,10 @@
+TraceBound
+Copyright 2026 Stephen Coston
+
+This project includes an unmodified AI Investigation Event JSON Schema from
+Scoston/ai-forensic-readiness, licensed under Apache License 2.0.
+Source: https://github.com/Scoston/ai-forensic-readiness
+The exact source URL, retrieval date, and SHA-256 are recorded in docs/SOURCES.md.
+
+MCP and Microsoft names identify interoperability references. Their use does not
+imply sponsorship, endorsement, certification, or affiliation.

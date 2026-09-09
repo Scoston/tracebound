@@ -1,0 +1,123 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://raw.githubusercontent.com/Scoston/ai-forensic-readiness/main/schemas/ai-investigation-event.schema.json",
+  "title": "AI Investigation Event",
+  "description": "Discussion-draft vendor-neutral envelope for consequential AI investigation events.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schema_version", "event_id", "event_type", "timestamp", "correlation", "principal", "integrity"],
+  "properties": {
+    "schema_version": {"const": "0.1.0-draft"},
+    "event_id": {"type": "string", "minLength": 1},
+    "event_type": {
+      "type": "string",
+      "enum": [
+        "ai.session.started", "ai.session.ended", "ai.instruction.received", "ai.instruction.transformed",
+        "ai.context.retrieved", "ai.context.filtered", "ai.memory.read", "ai.memory.written", "ai.memory.deleted",
+        "ai.plan.created", "ai.plan.revised", "ai.policy.evaluated", "ai.approval.requested", "ai.approval.granted",
+        "ai.approval.denied", "ai.approval.expired", "ai.tool.requested", "ai.tool.authorized", "ai.tool.executed",
+        "ai.tool.failed", "ai.delegation.created", "ai.delegation.accepted", "ai.delegation.revoked",
+        "ai.state.changed", "ai.state.compensated", "ai.state.validated", "ai.evidence.exported", "ai.evidence.sealed"
+      ]
+    },
+    "timestamp": {"type": "string", "format": "date-time"},
+    "observed_at": {"type": "string", "format": "date-time"},
+    "sequence": {"type": "integer", "minimum": 0},
+    "correlation": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["trace_id", "session_id"],
+      "properties": {
+        "trace_id": {"type": "string", "minLength": 1},
+        "session_id": {"type": "string", "minLength": 1},
+        "task_id": {"type": "string"},
+        "workflow_id": {"type": "string"},
+        "parent_event_id": {"type": "string"}
+      }
+    },
+    "principal": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["agent_id", "runtime_identity"],
+      "properties": {
+        "human_id": {"type": "string"},
+        "agent_id": {"type": "string", "minLength": 1},
+        "runtime_identity": {"type": "string", "minLength": 1},
+        "delegated_identity": {"type": "string"},
+        "tenant_id": {"type": "string"},
+        "authority_ref": {"type": "string"}
+      }
+    },
+    "ai_component": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "agent_version": {"type": "string"},
+        "model_id": {"type": "string"},
+        "model_version": {"type": "string"},
+        "provider": {"type": "string"},
+        "system_prompt_version": {"type": "string"},
+        "policy_version": {"type": "string"}
+      }
+    },
+    "influence": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "instruction_ref": {"type": "string"},
+        "retrieved_context_refs": {"type": "array", "items": {"type": "string"}, "uniqueItems": true},
+        "memory_read_refs": {"type": "array", "items": {"type": "string"}, "uniqueItems": true},
+        "provenance_refs": {"type": "array", "items": {"type": "string"}, "uniqueItems": true}
+      }
+    },
+    "decision": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "plan_step": {"type": "string"},
+        "policy_decision": {"enum": ["allow", "deny", "escalate", "not_evaluated"]},
+        "approval_required": {"type": "boolean"},
+        "approval_ref": {"type": "string"}
+      }
+    },
+    "action": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "tool_id": {"type": "string"},
+        "tool_version": {"type": "string"},
+        "operation": {"type": "string"},
+        "arguments_digest": {"type": "string"},
+        "target": {"type": "string"},
+        "outcome": {"enum": ["requested", "authorized", "succeeded", "failed", "denied", "unknown"]},
+        "result_ref": {"type": "string"},
+        "retry_count": {"type": "integer", "minimum": 0}
+      }
+    },
+    "state": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "mutation_type": {"type": "string"},
+        "before_ref": {"type": "string"},
+        "after_ref": {"type": "string"},
+        "persistence_scope": {"type": "string"},
+        "downstream_refs": {"type": "array", "items": {"type": "string"}, "uniqueItems": true},
+        "reversibility_class": {"enum": ["R0", "R1", "R2", "R3", "unknown"]}
+      }
+    },
+    "integrity": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["collector", "retention_class", "access_label"],
+      "properties": {
+        "collector": {"type": "string", "minLength": 1},
+        "hash_algorithm": {"enum": ["sha256", "sha384", "sha512", "none"]},
+        "hash": {"type": "string"},
+        "signature_ref": {"type": "string"},
+        "retention_class": {"type": "string", "minLength": 1},
+        "access_label": {"type": "string", "minLength": 1}
+      }
+    }
+  }
+}

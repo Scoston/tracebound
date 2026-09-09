@@ -1,0 +1,15 @@
+{
+  "recorded_at": "2026-09-09T10:13:16.703712+00:00",
+  "python": "3.12.14",
+  "platform": "Linux-6.18.35-x86_64-with-glibc2.39",
+  "packages": {
+    "cryptography": "46.0.0",
+    "jsonschema": "4.26.0"
+  },
+  "tests_run": 35,
+  "failures": 0,
+  "errors": 0,
+  "skipped": [],
+  "passed": true,
+  "live_entra_validated": false
+}

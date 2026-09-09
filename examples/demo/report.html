@@ -1,0 +1,568 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta http-equiv="Content-Security-Policy" content="default-src 'none'; style-src 'unsafe-inline'; script-src 'sha256-dI+QKyYifB9Io9aQ2WyIgicDuCUsFsmepV1OIIoz+r8='; base-uri 'none'; form-action 'none'"><title>Containment evidence report | TraceBound</title><style>
+:root{color-scheme:dark;--bg:#0a1018;--panel:#111c29;--line:#24364b;--text:#edf3fa;--muted:#a8b9cb;--teal:#58e0c0;--red:#ff918a;--gold:#f6cb7a}
+*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--text);font:15px/1.6 system-ui,-apple-system,Segoe UI,sans-serif}main{max-width:1200px;margin:auto;padding:38px 42px 64px}a{color:var(--teal)}.bar{display:flex;justify-content:space-between;align-items:center;gap:16px;border-bottom:1px solid var(--line);padding-bottom:22px}.brand{font-size:22px;font-weight:800;letter-spacing:.12em}.brand b{color:var(--teal)}.eyebrow{color:var(--teal);font-size:12px;font-weight:700;letter-spacing:.13em;text-transform:uppercase}h1{font-size:clamp(32px,5vw,56px);line-height:1.08;letter-spacing:-.035em;margin:28px 0 18px;max-width:900px}h2{font-size:22px;margin:32px 0 14px}h3{font-size:20px;margin:0 0 8px}.lead{max-width:820px;color:var(--muted);font-size:18px}.muted,small{color:var(--muted)}.badge{display:inline-block;border:1px solid var(--line);border-radius:5px;padding:4px 9px;font-size:12px;white-space:nowrap}.bad{color:var(--red)}.good{color:var(--teal)}.unknown{color:var(--gold)}.metrics{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin:30px 0}.metric{background:var(--panel);border:1px solid var(--line);padding:19px;border-radius:10px}.metric strong{display:block;font-size:33px;line-height:1.2;margin-bottom:7px}.metric span{color:var(--muted);font-size:13px}.notice{border-left:3px solid var(--gold);padding:12px 18px;background:#1b2027;color:var(--muted)}.card{background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:24px;margin:18px 0}.card-top{display:flex;justify-content:space-between;align-items:flex-start;gap:20px}.columns{display:grid;grid-template-columns:1fr 1fr;gap:28px}.label{display:block;font-size:12px;letter-spacing:.06em;text-transform:uppercase;color:var(--muted);margin-bottom:6px}table{border-collapse:collapse;width:100%;font-size:14px}th,td{text-align:left;padding:13px 14px;border-bottom:1px solid var(--line);vertical-align:top}th{color:var(--muted);font-size:12px;text-transform:uppercase}.table-wrap{overflow-x:auto;border:1px solid var(--line);border-radius:9px}code,pre{font-family:ui-monospace,SFMono-Regular,Consolas,monospace;font-size:12px}code{overflow-wrap:anywhere}pre{white-space:pre-wrap;overflow-wrap:anywhere;max-height:340px;overflow:auto;background:#080f17;padding:16px;border:1px solid var(--line);border-radius:6px}summary{cursor:pointer;color:var(--teal);padding:10px 0}select,button{font:inherit;color:var(--text);border:1px solid var(--line);background:var(--panel);padding:9px 12px;border-radius:6px}button{cursor:pointer}select:focus,button:focus,summary:focus{outline:2px solid var(--teal);outline-offset:3px}.toolbar{display:flex;align-items:center;gap:14px;margin:25px 0 8px}.path{display:grid;grid-template-columns:1fr 24px 1fr 24px 1fr;align-items:center;margin:18px 0;padding:18px;background:#0a1520;border-radius:8px;gap:8px}.path .node{border:1px solid var(--line);padding:12px;border-radius:6px;text-align:center}.path .arrow{color:var(--muted);text-align:center}.path small{display:block}footer{border-top:1px solid var(--line);margin-top:32px;padding-top:20px;font-size:12px;color:var(--muted)}[hidden]{display:none!important}@media(max-width:760px){main{padding:24px 16px}.metrics{grid-template-columns:repeat(2,1fr)}.columns{grid-template-columns:1fr}.card{padding:17px}.card-top,.bar{flex-wrap:wrap}.path{font-size:12px;padding:8px}.path .node{padding:8px 4px}th,td{padding:10px}.lead{font-size:16px}}@media print{:root{--bg:white;--panel:white;--text:#111;--muted:#444;--line:#bbb;--teal:#076a55;--red:#9b211c;--gold:#805400}body{background:white}.toolbar,button{display:none}.card{break-inside:avoid}.card[hidden]{display:block!important}pre{max-height:none}.notice,.path{background:#f4f6f8}main{padding:0}.metrics{margin:15px 0}}
+</style></head><body><main><header class="bar"><div class="brand">TRACE<b>BOUND</b></div><div><span class="badge">RESEARCH RELEASE · 0.1.0</span> <button id="print-report" type="button">Print report</button></div></header><p class="eyebrow" style="margin-top:32px">Containment verification / Running local services</p><h1>Revocation issued.<br>What can still execute?</h1><p class="lead">Measured ticket operations across identity, session, delegation, queue, and approval boundaries. Every conclusion links to the recorded probe and resource evidence.</p><div class="metrics"><div class="metric"><strong>6</strong><span>Scenarios exercised</span></div><div class="metric"><strong>6</strong><span>Surviving access paths observed</span></div><div class="metric"><strong>6</strong><span>Paths denied after remediation</span></div><div class="metric"><strong>0</strong><span>Model tokens consumed</span></div></div><p class="notice">Scope: synthetic local lab. A denied retest verifies the observed path during this run. Production systems, other access paths, and later activity remain untested.</p><h2>Control outcomes</h2><div class="table-wrap"><table><thead><tr><th>Scenario</th><th>Initial boundary</th><th>After remediation</th><th>Owner</th></tr></thead><tbody><tr><td><strong>Cached access token</strong></td><td class="bad">succeeded</td><td class="good">denied</td><td>Identity and application owners</td></tr><tr><td><strong>Application-owned session</strong></td><td class="bad">succeeded</td><td class="good">denied</td><td>Application owner</td></tr><tr><td><strong>Child-agent authority</strong></td><td class="bad">succeeded</td><td class="good">denied</td><td>Agent platform owner</td></tr><tr><td><strong>Queued work</strong></td><td class="bad">succeeded</td><td class="good">denied</td><td>Workflow owner</td></tr><tr><td><strong>Reused approval</strong></td><td class="bad">succeeded</td><td class="good">denied</td><td>Approval service owner</td></tr><tr><td><strong>Changed action scope</strong></td><td class="bad">succeeded</td><td class="good">denied</td><td>Approval service owner</td></tr></tbody></table></div><div class="toolbar"><label for="scenario-filter">Inspect experiment</label><select id="scenario-filter"><option value="all">All scenarios</option><option value="cached_token">Cached access token</option><option value="application_session">Application-owned session</option><option value="child_agent">Child-agent authority</option><option value="queued_job">Queued work</option><option value="approval_replay">Reused approval</option><option value="approval_scope">Changed action scope</option></select></div><article class="card" data-scenario="cached_token"><div class="card-top"><div><span class="eyebrow">Experiment 01</span><h3>Cached access token</h3></div><span class="badge good">RETEST: DENIED</span></div><p class="muted">The resource accepts a cached grant after identity revocation.</p><div class="path" aria-label="Observed authority path"><div class="node">agent-001<small>Executing principal</small></div><span class="arrow">→</span><div class="node">Ticket update<small>succeeded after initial boundary</small></div><span class="arrow">→</span><div class="node">TICKET-001<small>Resource state independently read</small></div></div><div class="columns"><p><span class="label">Remediation tested</span>Check current grant status at the resource boundary.</p><p><span class="label">Accountable owner</span>Identity and application owners</p></div><div class="table-wrap"><table><thead><tr><th>Phase</th><th>Identity</th><th>Observation</th><th>State change</th><th>Round trip</th></tr></thead><tbody><tr><td>baseline</td><td>agent-001</td><td>succeeded</td><td>1</td><td>33.204 ms</td></tr><tr><td>initial control</td><td>agent-001</td><td>succeeded</td><td>1</td><td>14.784 ms</td></tr><tr><td>remediated control</td><td>agent-001</td><td>denied</td><td>0</td><td>13.627 ms</td></tr></tbody></table></div><details><summary>Inspect evidence references and observations</summary><pre>{
+  &quot;baseline&quot;: {
+    &quot;after_chunk_id&quot;: &quot;sha256:94827404d4332d1c360d9c838bcee041d901f5c3f187fd45f2c6978d810a0746&quot;,
+    &quot;before_chunk_id&quot;: &quot;sha256:c1a202f2dce41d8bf90715103649e634ee42f78541df75050aaa5f04df2b831c&quot;,
+    &quot;http_status&quot;: 200,
+    &quot;observation&quot;: &quot;succeeded&quot;,
+    &quot;observation_chunk_id&quot;: &quot;sha256:5ea8f072e8e3134bccee55bce8ad0d168d0e1ebd032c5209881dce6232f4026b&quot;,
+    &quot;phase&quot;: &quot;baseline&quot;,
+    &quot;principal&quot;: &quot;agent-001&quot;,
+    &quot;reason&quot;: null,
+    &quot;receipt_chunk_id&quot;: &quot;sha256:c05feffa2a6fb46a4907dc1e30fc68e8e61b04889ec93c5bca7ec0b6cd6adedb&quot;,
+    &quot;request_id&quot;: &quot;eee9e9ef-159a-439e-ad62-4953438ad447&quot;,
+    &quot;round_trip_ms&quot;: 33.204,
+    &quot;since_boundary_ms&quot;: null,
+    &quot;state_delta&quot;: 1,
+    &quot;ticket&quot;: &quot;TICKET-001&quot;
+  },
+  &quot;exposure&quot;: &quot;The resource accepts a cached grant after identity revocation.&quot;,
+  &quot;fix&quot;: &quot;Check current grant status at the resource boundary.&quot;,
+  &quot;grants&quot;: [
+    {
+      &quot;active&quot;: true,
+      &quot;chunk_id&quot;: &quot;sha256:0fb5184ed2fb39f40eacde36f648fa3c68fb8a71cab6be3f7df2679cad76ec4d&quot;,
+      &quot;credential_id&quot;: &quot;dc709962-3900-4e96-a9f3-8d6efa16c664&quot;,
+      &quot;expires_ns&quot;: 4063409248202,
+      &quot;parent&quot;: null,
+      &quot;principal&quot;: &quot;agent-001&quot;,
+      &quot;scope&quot;: &quot;synthetic-ticket:update&quot;
+    },
+    {
+      &quot;active&quot;: true,
+      &quot;chunk_id&quot;: &quot;sha256:cb78e9d80b45afa04f750de2135e84648a055f82eec2d1e8fcb8ca3ccefe1dfd&quot;,
+      &quot;credential_id&quot;: &quot;71f93753-8c94-42da-8c74-2f39975a029b&quot;,
+      &quot;expires_ns&quot;: 4063427773813,
+      &quot;parent&quot;: &quot;agent-001&quot;,
+      &quot;principal&quot;: &quot;child-001&quot;,
+      &quot;scope&quot;: &quot;synthetic-ticket:update&quot;
+    },
+    {
+      &quot;active&quot;: true,
+      &quot;chunk_id&quot;: &quot;sha256:90b5fd3ef1c00389d33bda51884cb1454a7a5238088f7ec0b08a6de0b8770e02&quot;,
+      &quot;credential_id&quot;: &quot;5af7ce96-6b08-462d-8293-7cddb7586db7&quot;,
+      &quot;expires_ns&quot;: 4063433638093,
+      &quot;parent&quot;: null,
+      &quot;principal&quot;: &quot;queue-worker&quot;,
+      &quot;scope&quot;: &quot;synthetic-ticket:update&quot;
+    }
+  ],
+  &quot;initial&quot;: {
+    &quot;after_chunk_id&quot;: &quot;sha256:df6d45e5476c1d745ca37592a8448f30e2e74eb562f66037464489cd84c83830&quot;,
+    &quot;before_chunk_id&quot;: &quot;sha256:38a7d15e633585815301364b1b4907a4b2309c9099824f58deb1b13ab14f5d48&quot;,
+    &quot;http_status&quot;: 200,
+    &quot;observation&quot;: &quot;succeeded&quot;,
+    &quot;observation_chunk_id&quot;: &quot;sha256:586de0fef34cfc6e790222598cb4be67309015d3efc5fe916f33a7c3a11a5740&quot;,
+    &quot;phase&quot;: &quot;initial_control&quot;,
+    &quot;principal&quot;: &quot;agent-001&quot;,
+    &quot;reason&quot;: null,
+    &quot;receipt_chunk_id&quot;: &quot;sha256:4aaf07e8bd56819c7bbee7570dba628dc81dbba588bd2db91dcb3f7d3f7a23c9&quot;,
+    &quot;request_id&quot;: &quot;7d5fa40c-8acd-44d9-94ea-fe325a7af9f0&quot;,
+    &quot;round_trip_ms&quot;: 14.784,
+    &quot;since_boundary_ms&quot;: 27.016,
+    &quot;state_delta&quot;: 1,
+    &quot;ticket&quot;: &quot;TICKET-001&quot;
+  },
+  &quot;initial_boundary_chunk_id&quot;: &quot;sha256:1d506afaabe711a4e91935b9f7653c764a4911f5a720d9f132274f411d983516&quot;,
+  &quot;initial_control&quot;: &quot;failed&quot;,
+  &quot;mode&quot;: &quot;running-local-services&quot;,
+  &quot;owner&quot;: &quot;Identity and application owners&quot;,
+  &quot;remediated_control&quot;: &quot;observed_denied&quot;,
+  &quot;remediation_chunk_id&quot;: &quot;sha256:72673e1cdf4eb632f29383393584d29b821ff2483f8596bab4eb068d3492f6ad&quot;,
+  &quot;retest&quot;: {
+    &quot;after_chunk_id&quot;: &quot;sha256:b05cc9e2f35808e491d0bc195cb5fa50da1aec60959d33c352136088fda0442f&quot;,
+    &quot;before_chunk_id&quot;: &quot;sha256:efc9cc762bf5412bb2f1e73652de03134a27e36ccb8be9bcdab6bc18ece028f6&quot;,
+    &quot;http_status&quot;: 403,
+    &quot;observation&quot;: &quot;denied&quot;,
+    &quot;observation_chunk_id&quot;: &quot;sha256:40f0f428cdf8aa81d3a0b73dab9fc6c2740ca6a3c4aafdd107580982925592b1&quot;,
+    &quot;phase&quot;: &quot;remediated_control&quot;,
+    &quot;principal&quot;: &quot;agent-001&quot;,
+    &quot;reason&quot;: &quot;inactive_grant&quot;,
+    &quot;receipt_chunk_id&quot;: &quot;sha256:2789de5f672f9d27b8a69035294118a948044a3e41cc3df2fdae2930e516ed07&quot;,
+    &quot;request_id&quot;: &quot;786f2a1f-0e98-40e0-911d-87b1b069728b&quot;,
+    &quot;round_trip_ms&quot;: 13.627,
+    &quot;since_boundary_ms&quot;: 25.368,
+    &quot;state_delta&quot;: 0,
+    &quot;ticket&quot;: &quot;TICKET-001&quot;
+  },
+  &quot;scenario&quot;: &quot;cached_token&quot;,
+  &quot;title&quot;: &quot;Cached access token&quot;,
+  &quot;untested&quot;: [
+    &quot;production deployments&quot;,
+    &quot;other credentials and resources&quot;,
+    &quot;future executions outside the observation window&quot;,
+    &quot;stochastic model behavior&quot;
+  ]
+}</pre></details></article><article class="card" data-scenario="application_session"><div class="card-top"><div><span class="eyebrow">Experiment 02</span><h3>Application-owned session</h3></div><span class="badge good">RETEST: DENIED</span></div><p class="muted">An application session survives revocation at the identity service.</p><div class="path" aria-label="Observed authority path"><div class="node">agent-001<small>Executing principal</small></div><span class="arrow">→</span><div class="node">Ticket update<small>succeeded after initial boundary</small></div><span class="arrow">→</span><div class="node">TICKET-001<small>Resource state independently read</small></div></div><div class="columns"><p><span class="label">Remediation tested</span>Invalidate application sessions associated with the principal.</p><p><span class="label">Accountable owner</span>Application owner</p></div><div class="table-wrap"><table><thead><tr><th>Phase</th><th>Identity</th><th>Observation</th><th>State change</th><th>Round trip</th></tr></thead><tbody><tr><td>baseline</td><td>agent-001</td><td>succeeded</td><td>1</td><td>30.321 ms</td></tr><tr><td>initial control</td><td>agent-001</td><td>succeeded</td><td>1</td><td>16.622 ms</td></tr><tr><td>remediated control</td><td>agent-001</td><td>denied</td><td>0</td><td>20.659 ms</td></tr></tbody></table></div><details><summary>Inspect evidence references and observations</summary><pre>{
+  &quot;baseline&quot;: {
+    &quot;after_chunk_id&quot;: &quot;sha256:bbada53035c3e7888702626d0dd7dc42b267b0b8d0756a962cac1891b31612cf&quot;,
+    &quot;before_chunk_id&quot;: &quot;sha256:afb6093cf611c9efaeea3919fcf6102ff7c5ed4936c32d56a6512c4a6f0eaffc&quot;,
+    &quot;http_status&quot;: 200,
+    &quot;observation&quot;: &quot;succeeded&quot;,
+    &quot;observation_chunk_id&quot;: &quot;sha256:6cbf2317e1f8f3bdf80d7ca99dea9bfcb97eabc1847471c9a18aeb97c253210f&quot;,
+    &quot;phase&quot;: &quot;baseline&quot;,
+    &quot;principal&quot;: &quot;agent-001&quot;,
+    &quot;reason&quot;: null,
+    &quot;receipt_chunk_id&quot;: &quot;sha256:e7f17d292bbc009e14ebd56d278ede862cf9feb0839324cfc5ca83243f1688a0&quot;,
+    &quot;request_id&quot;: &quot;257a5ffb-27cd-41f4-8e2f-e64542f948d4&quot;,
+    &quot;round_trip_ms&quot;: 30.321,
+    &quot;since_boundary_ms&quot;: null,
+    &quot;state_delta&quot;: 1,
+    &quot;ticket&quot;: &quot;TICKET-001&quot;
+  },
+  &quot;exposure&quot;: &quot;An application session survives revocation at the identity service.&quot;,
+  &quot;fix&quot;: &quot;Invalidate application sessions associated with the principal.&quot;,
+  &quot;grants&quot;: [
+    {
+      &quot;active&quot;: true,
+      &quot;chunk_id&quot;: &quot;sha256:33c654ad30514c0479b18bd49512f65c7618cbc200bde96b0a214b954c3d10e5&quot;,
+      &quot;credential_id&quot;: &quot;2b1f4c58-bbff-4d9d-991e-ae308dfecaa7&quot;,
+      &quot;expires_ns&quot;: 4064415392510,
+      &quot;parent&quot;: null,
+      &quot;principal&quot;: &quot;agent-001&quot;,
+      &quot;scope&quot;: &quot;synthetic-ticket:update&quot;
+    },
+    {
+      &quot;active&quot;: true,
+      &quot;chunk_id&quot;: &quot;sha256:4fea8a10be940593ed93c92812621492eb3e071d4f675f24f2475e606ce67ce7&quot;,
+      &quot;credential_id&quot;: &quot;8a8887b2-8922-471d-87fd-e10059db6f58&quot;,
+      &quot;expires_ns&quot;: 4064431759353,
+      &quot;parent&quot;: &quot;agent-001&quot;,
+      &quot;principal&quot;: &quot;child-001&quot;,
+      &quot;scope&quot;: &quot;synthetic-ticket:update&quot;
+    },
+    {
+      &quot;active&quot;: true,
+      &quot;chunk_id&quot;: &quot;sha256:cf76a3aa71ff76303d112a526733127f40768e4e612584aceff9a8df8dc389ad&quot;,
+      &quot;credential_id&quot;: &quot;94f8f4f1-e57e-45dd-b3f2-87d49a4fc18e&quot;,
+      &quot;expires_ns&quot;: 4064436088261,
+      &quot;parent&quot;: null,
+      &quot;principal&quot;: &quot;queue-worker&quot;,
+      &quot;scope&quot;: &quot;synthetic-ticket:update&quot;
+    }
+  ],
+  &quot;initial&quot;: {
+    &quot;after_chunk_id&quot;: &quot;sha256:854df0665963cac93951ba1828b94739e8fa8e61cc3d133af91b1c1937785e33&quot;,
+    &quot;before_chunk_id&quot;: &quot;sha256:168bfbde6864d16db36d1d6325e952da3e21476574f919bc65f2919a8bf17c32&quot;,
+    &quot;http_status&quot;: 200,
+    &quot;observation&quot;: &quot;succeeded&quot;,
+    &quot;observation_chunk_id&quot;: &quot;sha256:9a5df3fd0e6e096f309cdce02a60f5c5761c36747ad4ad84e301bab6952884d9&quot;,
+    &quot;phase&quot;: &quot;initial_control&quot;,
+    &quot;principal&quot;: &quot;agent-001&quot;,
+    &quot;reason&quot;: null,
+    &quot;receipt_chunk_id&quot;: &quot;sha256:25a5c172cc0fa82e204dedeb24d31d4c3f181a3be52dcf04311ca5d0842c5289&quot;,
+    &quot;request_id&quot;: &quot;1b1a9ec2-94d0-4783-a540-55b0435197a4&quot;,
+    &quot;round_trip_ms&quot;: 16.622,
+    &quot;since_boundary_ms&quot;: 32.17,
+    &quot;state_delta&quot;: 1,
+    &quot;ticket&quot;: &quot;TICKET-001&quot;
+  },
+  &quot;initial_boundary_chunk_id&quot;: &quot;sha256:daf4534af8e8e95317cdb04b733fe9641abee61a888b9b008adfe49ca327dfa9&quot;,
+  &quot;initial_control&quot;: &quot;failed&quot;,
+  &quot;mode&quot;: &quot;running-local-services&quot;,
+  &quot;owner&quot;: &quot;Application owner&quot;,
+  &quot;remediated_control&quot;: &quot;observed_denied&quot;,
+  &quot;remediation_chunk_id&quot;: &quot;sha256:6d5d6fdb8a2cfba3e603661eb8bf158f05e9cc9f4a3182e2d22362f8960cc98d&quot;,
+  &quot;retest&quot;: {
+    &quot;after_chunk_id&quot;: &quot;sha256:f922333b8264734e96a5ade6304cfe58c191a656cff9e907fbcb9e5239d22c0d&quot;,
+    &quot;before_chunk_id&quot;: &quot;sha256:1a4caf525d74e39c70feac0054f6e86abba00406cbbd3c5e377d1433a85f6e72&quot;,
+    &quot;http_status&quot;: 403,
+    &quot;observation&quot;: &quot;denied&quot;,
+    &quot;observation_chunk_id&quot;: &quot;sha256:cefa01557c6576ebbb45fab957b26c57cfd3b6fb17781de178df992b43ace33d&quot;,
+    &quot;phase&quot;: &quot;remediated_control&quot;,
+    &quot;principal&quot;: &quot;agent-001&quot;,
+    &quot;reason&quot;: &quot;inactive_grant&quot;,
+    &quot;receipt_chunk_id&quot;: &quot;sha256:e0ff73f49378bfd3c78e56b32d3788dace31ae8839fbe92bc5c70b014ab5d728&quot;,
+    &quot;request_id&quot;: &quot;1f2f8f9c-b2a0-4f39-86db-23108c9e757e&quot;,
+    &quot;round_trip_ms&quot;: 20.659,
+    &quot;since_boundary_ms&quot;: 35.517,
+    &quot;state_delta&quot;: 0,
+    &quot;ticket&quot;: &quot;TICKET-001&quot;
+  },
+  &quot;scenario&quot;: &quot;application_session&quot;,
+  &quot;title&quot;: &quot;Application-owned session&quot;,
+  &quot;untested&quot;: [
+    &quot;production deployments&quot;,
+    &quot;other credentials and resources&quot;,
+    &quot;future executions outside the observation window&quot;,
+    &quot;stochastic model behavior&quot;
+  ]
+}</pre></details></article><article class="card" data-scenario="child_agent"><div class="card-top"><div><span class="eyebrow">Experiment 03</span><h3>Child-agent authority</h3></div><span class="badge good">RETEST: DENIED</span></div><p class="muted">A child agent retains its separately issued grant.</p><div class="path" aria-label="Observed authority path"><div class="node">child-001<small>Executing principal</small></div><span class="arrow">→</span><div class="node">Ticket update<small>succeeded after initial boundary</small></div><span class="arrow">→</span><div class="node">TICKET-001<small>Resource state independently read</small></div></div><div class="columns"><p><span class="label">Remediation tested</span>Revoke descendant grants and validate them at execution.</p><p><span class="label">Accountable owner</span>Agent platform owner</p></div><div class="table-wrap"><table><thead><tr><th>Phase</th><th>Identity</th><th>Observation</th><th>State change</th><th>Round trip</th></tr></thead><tbody><tr><td>baseline</td><td>child-001</td><td>succeeded</td><td>1</td><td>33.05 ms</td></tr><tr><td>initial control</td><td>child-001</td><td>succeeded</td><td>1</td><td>11.009 ms</td></tr><tr><td>remediated control</td><td>child-001</td><td>denied</td><td>0</td><td>11.14 ms</td></tr></tbody></table></div><details><summary>Inspect evidence references and observations</summary><pre>{
+  &quot;baseline&quot;: {
+    &quot;after_chunk_id&quot;: &quot;sha256:fd49d74f5c3671e8554a29452a6455b3b4647eae11dce13b7eeec787d45230e0&quot;,
+    &quot;before_chunk_id&quot;: &quot;sha256:bc880c3cf998989c078e05ea438f774be9482b0a2be0289d1fe6d512f781a8e8&quot;,
+    &quot;http_status&quot;: 200,
+    &quot;observation&quot;: &quot;succeeded&quot;,
+    &quot;observation_chunk_id&quot;: &quot;sha256:ca89c51162cb34f2285015b0886b8b046bfc6901887d1f9dff5ee706a913c3b2&quot;,
+    &quot;phase&quot;: &quot;baseline&quot;,
+    &quot;principal&quot;: &quot;child-001&quot;,
+    &quot;reason&quot;: null,
+    &quot;receipt_chunk_id&quot;: &quot;sha256:f9d26af0a2e5e7fab48601658a9eda9f241ef96ee1c128a3aef321582a20ff35&quot;,
+    &quot;request_id&quot;: &quot;f7cdac91-6977-41c6-969c-31e84fdbcc18&quot;,
+    &quot;round_trip_ms&quot;: 33.05,
+    &quot;since_boundary_ms&quot;: null,
+    &quot;state_delta&quot;: 1,
+    &quot;ticket&quot;: &quot;TICKET-001&quot;
+  },
+  &quot;exposure&quot;: &quot;A child agent retains its separately issued grant.&quot;,
+  &quot;fix&quot;: &quot;Revoke descendant grants and validate them at execution.&quot;,
+  &quot;grants&quot;: [
+    {
+      &quot;active&quot;: true,
+      &quot;chunk_id&quot;: &quot;sha256:3c07e2b93b0bb602226bf4fc52e90669e558a065e34577d752d37d9f88344fa8&quot;,
+      &quot;credential_id&quot;: &quot;8bf6e4ea-efd1-4af7-a802-95e525fd583c&quot;,
+      &quot;expires_ns&quot;: 4065558877374,
+      &quot;parent&quot;: null,
+      &quot;principal&quot;: &quot;agent-001&quot;,
+      &quot;scope&quot;: &quot;synthetic-ticket:update&quot;
+    },
+    {
+      &quot;active&quot;: true,
+      &quot;chunk_id&quot;: &quot;sha256:a984b7ccb397b8af1871eb8168efb38e4a379e9917173c72baab3f945c94fcf5&quot;,
+      &quot;credential_id&quot;: &quot;266ed430-2e55-4d6a-bec0-5e6295091902&quot;,
+      &quot;expires_ns&quot;: 4065571931342,
+      &quot;parent&quot;: &quot;agent-001&quot;,
+      &quot;principal&quot;: &quot;child-001&quot;,
+      &quot;scope&quot;: &quot;synthetic-ticket:update&quot;
+    },
+    {
+      &quot;active&quot;: true,
+      &quot;chunk_id&quot;: &quot;sha256:bfa731ab1abcf6cfd825d625e34b51699cc36343bf4bcedcdaa5cb51afe05377&quot;,
+      &quot;credential_id&quot;: &quot;cfe3b888-f17c-480b-bd8b-7d063d0a2b92&quot;,
+      &quot;expires_ns&quot;: 4065576924048,
+      &quot;parent&quot;: null,
+      &quot;principal&quot;: &quot;queue-worker&quot;,
+      &quot;scope&quot;: &quot;synthetic-ticket:update&quot;
+    }
+  ],
+  &quot;initial&quot;: {
+    &quot;after_chunk_id&quot;: &quot;sha256:a81bb61e168874c3d88085a0180fda2427c1bd8367470a340b2d21b1f6ff4f6b&quot;,
+    &quot;before_chunk_id&quot;: &quot;sha256:f4734f2d3e1b8d3f708cac681d7fd5506622ff977e3fce5c8f07b1ba929874a8&quot;,
+    &quot;http_status&quot;: 200,
+    &quot;observation&quot;: &quot;succeeded&quot;,
+    &quot;observation_chunk_id&quot;: &quot;sha256:400832af46b2ed267f7712b89bd4f7d0b3bd61ac8b44cb4cc3084f3dcf1d4dc7&quot;,
+    &quot;phase&quot;: &quot;initial_control&quot;,
+    &quot;principal&quot;: &quot;child-001&quot;,
+    &quot;reason&quot;: null,
+    &quot;receipt_chunk_id&quot;: &quot;sha256:e83c582fef885bce556fee134d474e0b3a40023e65292c0f83310e90c20d15f0&quot;,
+    &quot;request_id&quot;: &quot;4346f23e-248d-48aa-b5ec-3dd43a42218b&quot;,
+    &quot;round_trip_ms&quot;: 11.009,
+    &quot;since_boundary_ms&quot;: 19.841,
+    &quot;state_delta&quot;: 1,
+    &quot;ticket&quot;: &quot;TICKET-001&quot;
+  },
+  &quot;initial_boundary_chunk_id&quot;: &quot;sha256:74ab3a91abbb7b0a91ca8509227aa7ae39fb7314ae70a2e7120264f82a9cf8cc&quot;,
+  &quot;initial_control&quot;: &quot;failed&quot;,
+  &quot;mode&quot;: &quot;running-local-services&quot;,
+  &quot;owner&quot;: &quot;Agent platform owner&quot;,
+  &quot;remediated_control&quot;: &quot;observed_denied&quot;,
+  &quot;remediation_chunk_id&quot;: &quot;sha256:ba64d55600935b970c449f23acec974177b1a604907b3e3bbe7e2df82a48f211&quot;,
+  &quot;retest&quot;: {
+    &quot;after_chunk_id&quot;: &quot;sha256:7855216cdc24fc51ec6b18a58312e8404beab2c39d2fa9ef7ad73dc0e15adc33&quot;,
+    &quot;before_chunk_id&quot;: &quot;sha256:f63e338ebd50fa92b30f2d8c341ae782c0ff7011f5d32ec00273873700563ece&quot;,
+    &quot;http_status&quot;: 403,
+    &quot;observation&quot;: &quot;denied&quot;,
+    &quot;observation_chunk_id&quot;: &quot;sha256:04749d4e367425cd0528b88e8c0ee90b5130adef7667cd1f1efe39301344933b&quot;,
+    &quot;phase&quot;: &quot;remediated_control&quot;,
+    &quot;principal&quot;: &quot;child-001&quot;,
+    &quot;reason&quot;: &quot;inactive_grant&quot;,
+    &quot;receipt_chunk_id&quot;: &quot;sha256:e5a2a67734cb35ed6263e0fd46a97bdba072d96dc1ba01d1f1372893bc254426&quot;,
+    &quot;request_id&quot;: &quot;30b68379-7dd0-4593-8f56-d12ba69f2c47&quot;,
+    &quot;round_trip_ms&quot;: 11.14,
+    &quot;since_boundary_ms&quot;: 20.928,
+    &quot;state_delta&quot;: 0,
+    &quot;ticket&quot;: &quot;TICKET-001&quot;
+  },
+  &quot;scenario&quot;: &quot;child_agent&quot;,
+  &quot;title&quot;: &quot;Child-agent authority&quot;,
+  &quot;untested&quot;: [
+    &quot;production deployments&quot;,
+    &quot;other credentials and resources&quot;,
+    &quot;future executions outside the observation window&quot;,
+    &quot;stochastic model behavior&quot;
+  ]
+}</pre></details></article><article class="card" data-scenario="queued_job"><div class="card-top"><div><span class="eyebrow">Experiment 04</span><h3>Queued work</h3></div><span class="badge good">RETEST: DENIED</span></div><p class="muted">Queued work executes through a service identity after the submitter loses access.</p><div class="path" aria-label="Observed authority path"><div class="node">queue-worker<small>Executing principal</small></div><span class="arrow">→</span><div class="node">Ticket update<small>succeeded after initial boundary</small></div><span class="arrow">→</span><div class="node">TICKET-001<small>Resource state independently read</small></div></div><div class="columns"><p><span class="label">Remediation tested</span>Recheck both the submitter and worker authority when dequeuing.</p><p><span class="label">Accountable owner</span>Workflow owner</p></div><div class="table-wrap"><table><thead><tr><th>Phase</th><th>Identity</th><th>Observation</th><th>State change</th><th>Round trip</th></tr></thead><tbody><tr><td>baseline</td><td>agent-001</td><td>succeeded</td><td>1</td><td>24.94 ms</td></tr><tr><td>initial control</td><td>queue-worker</td><td>succeeded</td><td>1</td><td>9.675 ms</td></tr><tr><td>remediated control</td><td>queue-worker</td><td>denied</td><td>0</td><td>14.72 ms</td></tr></tbody></table></div><details><summary>Inspect evidence references and observations</summary><pre>{
+  &quot;baseline&quot;: {
+    &quot;after_chunk_id&quot;: &quot;sha256:94c83b7cd8d7efc0f2606ca3d8e43037f6ccd5562119b45a14def4b125edaf41&quot;,
+    &quot;before_chunk_id&quot;: &quot;sha256:bde1c39667b3e6c47fe2de672aeff283b99d08f9c5ee1e764c718f1ca8e6a864&quot;,
+    &quot;http_status&quot;: 200,
+    &quot;observation&quot;: &quot;succeeded&quot;,
+    &quot;observation_chunk_id&quot;: &quot;sha256:5202486ff8e4ddd50cba13dd9080189f407c7b62cfe091f8e1b93685da3ec1a3&quot;,
+    &quot;phase&quot;: &quot;baseline&quot;,
+    &quot;principal&quot;: &quot;agent-001&quot;,
+    &quot;reason&quot;: null,
+    &quot;receipt_chunk_id&quot;: &quot;sha256:2fb71650efbcb54d3932d915b26da0c8b46f0dcaec8ff65eb155b43e0f881505&quot;,
+    &quot;request_id&quot;: &quot;f9b0f50a-eca2-4934-a638-02b824725905&quot;,
+    &quot;round_trip_ms&quot;: 24.94,
+    &quot;since_boundary_ms&quot;: null,
+    &quot;state_delta&quot;: 1,
+    &quot;ticket&quot;: &quot;TICKET-001&quot;
+  },
+  &quot;exposure&quot;: &quot;Queued work executes through a service identity after the submitter loses access.&quot;,
+  &quot;fix&quot;: &quot;Recheck both the submitter and worker authority when dequeuing.&quot;,
+  &quot;grants&quot;: [
+    {
+      &quot;active&quot;: true,
+      &quot;chunk_id&quot;: &quot;sha256:48a504b35dc83a49e59f49cdb191442638366a66ba321e9b20e7c53d08afea96&quot;,
+      &quot;credential_id&quot;: &quot;0dc189ca-e334-449d-9ad9-0f84a243a1b5&quot;,
+      &quot;expires_ns&quot;: 4066672631829,
+      &quot;parent&quot;: null,
+      &quot;principal&quot;: &quot;agent-001&quot;,
+      &quot;scope&quot;: &quot;synthetic-ticket:update&quot;
+    },
+    {
+      &quot;active&quot;: true,
+      &quot;chunk_id&quot;: &quot;sha256:67c0a740b29bf62c4beea15e8da2ac039dd67c3c5d02e9b68419c29c03b99acc&quot;,
+      &quot;credential_id&quot;: &quot;fdc2d92e-ca3b-419d-b163-96965a00e288&quot;,
+      &quot;expires_ns&quot;: 4066689421322,
+      &quot;parent&quot;: &quot;agent-001&quot;,
+      &quot;principal&quot;: &quot;child-001&quot;,
+      &quot;scope&quot;: &quot;synthetic-ticket:update&quot;
+    },
+    {
+      &quot;active&quot;: true,
+      &quot;chunk_id&quot;: &quot;sha256:7b713c10ba6fe28133fba56f84ca3d4e82757201bd8565d283f1f0a7e19b3127&quot;,
+      &quot;credential_id&quot;: &quot;0ab804c6-4ae3-4593-9008-a070714cd7d0&quot;,
+      &quot;expires_ns&quot;: 4066699991580,
+      &quot;parent&quot;: null,
+      &quot;principal&quot;: &quot;queue-worker&quot;,
+      &quot;scope&quot;: &quot;synthetic-ticket:update&quot;
+    }
+  ],
+  &quot;initial&quot;: {
+    &quot;after_chunk_id&quot;: &quot;sha256:492c41c5bfd2fb3f33b64dd7439147e7f659cea99ef106254864b8a6347909bc&quot;,
+    &quot;before_chunk_id&quot;: &quot;sha256:42a2647a2b723085cc9e5bba0c8db7a9a36f71cda607142dbc8db5d1263c927f&quot;,
+    &quot;http_status&quot;: 200,
+    &quot;observation&quot;: &quot;succeeded&quot;,
+    &quot;observation_chunk_id&quot;: &quot;sha256:f9bcc19f9880ec05446617672634ad1966d1d260535ff4756940523e44106a09&quot;,
+    &quot;phase&quot;: &quot;initial_control&quot;,
+    &quot;principal&quot;: &quot;queue-worker&quot;,
+    &quot;reason&quot;: null,
+    &quot;receipt_chunk_id&quot;: &quot;sha256:aae8aed8625324e65f089e73a6f04c075db5d07fd2f0c0fcb1d943654800935e&quot;,
+    &quot;request_id&quot;: &quot;64229b9f-fefc-4ce6-89ab-112415ce6e89&quot;,
+    &quot;round_trip_ms&quot;: 9.675,
+    &quot;since_boundary_ms&quot;: 24.212,
+    &quot;state_delta&quot;: 1,
+    &quot;ticket&quot;: &quot;TICKET-001&quot;
+  },
+  &quot;initial_boundary_chunk_id&quot;: &quot;sha256:624128f62d607fe32902926465385d8289d8f0b607ed22877ec80904ff1ea8ba&quot;,
+  &quot;initial_control&quot;: &quot;failed&quot;,
+  &quot;mode&quot;: &quot;running-local-services&quot;,
+  &quot;owner&quot;: &quot;Workflow owner&quot;,
+  &quot;remediated_control&quot;: &quot;observed_denied&quot;,
+  &quot;remediation_chunk_id&quot;: &quot;sha256:c17de5bdc5d0e334a919cd18a7be9dd249c8f328a5fa38e43ecaa668670d8159&quot;,
+  &quot;retest&quot;: {
+    &quot;after_chunk_id&quot;: &quot;sha256:a3a427f4cd8457f9c72b3d6baeea9ff2a0c3d458d8e37ef8100f4bd1d4389f21&quot;,
+    &quot;before_chunk_id&quot;: &quot;sha256:d15531d916710845e02ae5a541de80a3f79e6774bff4e3ed50bda96240ffead7&quot;,
+    &quot;http_status&quot;: 403,
+    &quot;observation&quot;: &quot;denied&quot;,
+    &quot;observation_chunk_id&quot;: &quot;sha256:68c003bcd97cddebd9ac9344e1e0fe9afeb59d0f81a8c142741b2d97fda8a151&quot;,
+    &quot;phase&quot;: &quot;remediated_control&quot;,
+    &quot;principal&quot;: &quot;queue-worker&quot;,
+    &quot;reason&quot;: &quot;submitter_revoked&quot;,
+    &quot;receipt_chunk_id&quot;: &quot;sha256:d148e82b1d30f6c84384095221d88cb7d3123dc7992126af988200e2168fc5e9&quot;,
+    &quot;request_id&quot;: &quot;9dc17e70-6b0c-42b1-807c-764012353f60&quot;,
+    &quot;round_trip_ms&quot;: 14.72,
+    &quot;since_boundary_ms&quot;: 21.708,
+    &quot;state_delta&quot;: 0,
+    &quot;ticket&quot;: &quot;TICKET-001&quot;
+  },
+  &quot;scenario&quot;: &quot;queued_job&quot;,
+  &quot;title&quot;: &quot;Queued work&quot;,
+  &quot;untested&quot;: [
+    &quot;production deployments&quot;,
+    &quot;other credentials and resources&quot;,
+    &quot;future executions outside the observation window&quot;,
+    &quot;stochastic model behavior&quot;
+  ]
+}</pre></details></article><article class="card" data-scenario="approval_replay"><div class="card-top"><div><span class="eyebrow">Experiment 05</span><h3>Reused approval</h3></div><span class="badge good">RETEST: DENIED</span></div><p class="muted">A recorded single-use approval is accepted again.</p><div class="path" aria-label="Observed authority path"><div class="node">agent-001<small>Executing principal</small></div><span class="arrow">→</span><div class="node">Ticket update<small>succeeded after initial boundary</small></div><span class="arrow">→</span><div class="node">TICKET-001<small>Resource state independently read</small></div></div><div class="columns"><p><span class="label">Remediation tested</span>Enforce single-use approval consumption at the action boundary.</p><p><span class="label">Accountable owner</span>Approval service owner</p></div><div class="table-wrap"><table><thead><tr><th>Phase</th><th>Identity</th><th>Observation</th><th>State change</th><th>Round trip</th></tr></thead><tbody><tr><td>baseline</td><td>agent-001</td><td>succeeded</td><td>1</td><td>28.575 ms</td></tr><tr><td>initial control</td><td>agent-001</td><td>succeeded</td><td>1</td><td>12.379 ms</td></tr><tr><td>remediated control</td><td>agent-001</td><td>denied</td><td>0</td><td>11.409 ms</td></tr></tbody></table></div><details><summary>Inspect evidence references and observations</summary><pre>{
+  &quot;baseline&quot;: {
+    &quot;after_chunk_id&quot;: &quot;sha256:ba3a7ac566af75f90789a009e44600292cc15df436e5c57a4d651fe720084233&quot;,
+    &quot;before_chunk_id&quot;: &quot;sha256:e94dbf66b30a9de16dd407a32e792d11cb3dc147acd9dcaccb0dba970b95f019&quot;,
+    &quot;http_status&quot;: 200,
+    &quot;observation&quot;: &quot;succeeded&quot;,
+    &quot;observation_chunk_id&quot;: &quot;sha256:2e384c013687f348b84c153588fefde70453c6c0c4d926954ed4cdfb214852a5&quot;,
+    &quot;phase&quot;: &quot;baseline&quot;,
+    &quot;principal&quot;: &quot;agent-001&quot;,
+    &quot;reason&quot;: null,
+    &quot;receipt_chunk_id&quot;: &quot;sha256:99875c506958d5d6b9068af271ef75cf6b02866ba52bb9fb2730e52e9485e7af&quot;,
+    &quot;request_id&quot;: &quot;c7863863-f6b6-42bc-9a09-ea81a08b2d3f&quot;,
+    &quot;round_trip_ms&quot;: 28.575,
+    &quot;since_boundary_ms&quot;: null,
+    &quot;state_delta&quot;: 1,
+    &quot;ticket&quot;: &quot;TICKET-001&quot;
+  },
+  &quot;exposure&quot;: &quot;A recorded single-use approval is accepted again.&quot;,
+  &quot;fix&quot;: &quot;Enforce single-use approval consumption at the action boundary.&quot;,
+  &quot;grants&quot;: [
+    {
+      &quot;active&quot;: true,
+      &quot;chunk_id&quot;: &quot;sha256:6f6cbcba901a5d8a3e007629dedb354f6bc07517af16900207b4980bf5fd172e&quot;,
+      &quot;credential_id&quot;: &quot;46dd593b-0a6b-4f45-af32-9aafb4aab555&quot;,
+      &quot;expires_ns&quot;: 4067693349419,
+      &quot;parent&quot;: null,
+      &quot;principal&quot;: &quot;agent-001&quot;,
+      &quot;scope&quot;: &quot;synthetic-ticket:update&quot;
+    },
+    {
+      &quot;active&quot;: true,
+      &quot;chunk_id&quot;: &quot;sha256:1bec2b82709432fe58e8ad5e50e693372c888f210f795add937c33b8de5d995f&quot;,
+      &quot;credential_id&quot;: &quot;e7709581-1a47-420f-b4a8-c93b994fd766&quot;,
+      &quot;expires_ns&quot;: 4067716466442,
+      &quot;parent&quot;: &quot;agent-001&quot;,
+      &quot;principal&quot;: &quot;child-001&quot;,
+      &quot;scope&quot;: &quot;synthetic-ticket:update&quot;
+    },
+    {
+      &quot;active&quot;: true,
+      &quot;chunk_id&quot;: &quot;sha256:0fb42286997eefe1d5ae40110577e673c4207786604e31a5495afff724a9f6ad&quot;,
+      &quot;credential_id&quot;: &quot;fa3caa2b-f540-4226-83c4-989f12e9a147&quot;,
+      &quot;expires_ns&quot;: 4067725535361,
+      &quot;parent&quot;: null,
+      &quot;principal&quot;: &quot;queue-worker&quot;,
+      &quot;scope&quot;: &quot;synthetic-ticket:update&quot;
+    }
+  ],
+  &quot;initial&quot;: {
+    &quot;after_chunk_id&quot;: &quot;sha256:7ef21c9909dfe183710782e38c0693bd9cf767bfd9989e934bf4bb6bd27c93d6&quot;,
+    &quot;before_chunk_id&quot;: &quot;sha256:5a5f14a71e1831ed0db6ea2ebc59b2ff4f784e7a77619ec92b15c5fdbe3bf89c&quot;,
+    &quot;http_status&quot;: 200,
+    &quot;observation&quot;: &quot;succeeded&quot;,
+    &quot;observation_chunk_id&quot;: &quot;sha256:68f35538c311b9b056d977f0c2721b001f490c4277ab15d90ed415e3d3d9160c&quot;,
+    &quot;phase&quot;: &quot;initial_control&quot;,
+    &quot;principal&quot;: &quot;agent-001&quot;,
+    &quot;reason&quot;: null,
+    &quot;receipt_chunk_id&quot;: &quot;sha256:eb966c21c7bfba920761dc9e84ac055de88d8a3964f13f95d9eadcdd3e179c4c&quot;,
+    &quot;request_id&quot;: &quot;25f41d38-e6f2-49d1-807e-d7acf6f2d2a5&quot;,
+    &quot;round_trip_ms&quot;: 12.379,
+    &quot;since_boundary_ms&quot;: 19.865,
+    &quot;state_delta&quot;: 1,
+    &quot;ticket&quot;: &quot;TICKET-001&quot;
+  },
+  &quot;initial_boundary_chunk_id&quot;: &quot;sha256:dacd355d2bb1a082347b1e0c325baca6ab420fbac5a066c8cb30ae325debadf2&quot;,
+  &quot;initial_control&quot;: &quot;failed&quot;,
+  &quot;mode&quot;: &quot;running-local-services&quot;,
+  &quot;owner&quot;: &quot;Approval service owner&quot;,
+  &quot;remediated_control&quot;: &quot;observed_denied&quot;,
+  &quot;remediation_chunk_id&quot;: &quot;sha256:b2b72f91be1a40837f37ac9dda6c9f3ff8d79ef7b9c020d6d6e47146fab9bcb8&quot;,
+  &quot;retest&quot;: {
+    &quot;after_chunk_id&quot;: &quot;sha256:9a8ad63ad09a7d0464645eb199333742a8880a769e95b9b5eedfc80cada99f5a&quot;,
+    &quot;before_chunk_id&quot;: &quot;sha256:80d56d3700ff2384cf71a74b362316967d16cbc034ea31f63c65557bd334f1b9&quot;,
+    &quot;http_status&quot;: 403,
+    &quot;observation&quot;: &quot;denied&quot;,
+    &quot;observation_chunk_id&quot;: &quot;sha256:ba696b1e17a7eb5101b764116e3d637bf70bdcc4533ce592894f4456e211fb8f&quot;,
+    &quot;phase&quot;: &quot;remediated_control&quot;,
+    &quot;principal&quot;: &quot;agent-001&quot;,
+    &quot;reason&quot;: &quot;approval_already_used&quot;,
+    &quot;receipt_chunk_id&quot;: &quot;sha256:5365b291fee8da845532390a1393a788e9d349f8ed80e61da4b907038ef2e10a&quot;,
+    &quot;request_id&quot;: &quot;17b57511-a633-4081-8089-410cd283fa65&quot;,
+    &quot;round_trip_ms&quot;: 11.409,
+    &quot;since_boundary_ms&quot;: 19.237,
+    &quot;state_delta&quot;: 0,
+    &quot;ticket&quot;: &quot;TICKET-001&quot;
+  },
+  &quot;scenario&quot;: &quot;approval_replay&quot;,
+  &quot;title&quot;: &quot;Reused approval&quot;,
+  &quot;untested&quot;: [
+    &quot;production deployments&quot;,
+    &quot;other credentials and resources&quot;,
+    &quot;future executions outside the observation window&quot;,
+    &quot;stochastic model behavior&quot;
+  ]
+}</pre></details></article><article class="card" data-scenario="approval_scope"><div class="card-top"><div><span class="eyebrow">Experiment 06</span><h3>Changed action scope</h3></div><span class="badge good">RETEST: DENIED</span></div><p class="muted">An approval for one ticket is applied to a different ticket.</p><div class="path" aria-label="Observed authority path"><div class="node">agent-001<small>Executing principal</small></div><span class="arrow">→</span><div class="node">Ticket update<small>succeeded after initial boundary</small></div><span class="arrow">→</span><div class="node">TICKET-002<small>Resource state independently read</small></div></div><div class="columns"><p><span class="label">Remediation tested</span>Bind approval to the principal and exact operation arguments.</p><p><span class="label">Accountable owner</span>Approval service owner</p></div><div class="table-wrap"><table><thead><tr><th>Phase</th><th>Identity</th><th>Observation</th><th>State change</th><th>Round trip</th></tr></thead><tbody><tr><td>baseline</td><td>agent-001</td><td>succeeded</td><td>1</td><td>22.516 ms</td></tr><tr><td>initial control</td><td>agent-001</td><td>succeeded</td><td>1</td><td>13.922 ms</td></tr><tr><td>remediated control</td><td>agent-001</td><td>denied</td><td>0</td><td>11.313 ms</td></tr></tbody></table></div><details><summary>Inspect evidence references and observations</summary><pre>{
+  &quot;baseline&quot;: {
+    &quot;after_chunk_id&quot;: &quot;sha256:697e2ec087ccde5d52f829719413f8a57d0860daa64d5392ebec9e698b41ada1&quot;,
+    &quot;before_chunk_id&quot;: &quot;sha256:f4532960c0caa620079669d1684c88fbf16515c46a4f4ac38c752a0d7c1bd7ca&quot;,
+    &quot;http_status&quot;: 200,
+    &quot;observation&quot;: &quot;succeeded&quot;,
+    &quot;observation_chunk_id&quot;: &quot;sha256:d3502e27b821506a341b4b552670921a88b842b4ee5efdeacfdc54610795a63d&quot;,
+    &quot;phase&quot;: &quot;baseline&quot;,
+    &quot;principal&quot;: &quot;agent-001&quot;,
+    &quot;reason&quot;: null,
+    &quot;receipt_chunk_id&quot;: &quot;sha256:4082c6a1b86008504ce60bdd06754686aaee90bf953ce7418cb09b1854cd8849&quot;,
+    &quot;request_id&quot;: &quot;9e30e11d-3e83-41c4-952e-52c3d1f9ed54&quot;,
+    &quot;round_trip_ms&quot;: 22.516,
+    &quot;since_boundary_ms&quot;: null,
+    &quot;state_delta&quot;: 1,
+    &quot;ticket&quot;: &quot;TICKET-001&quot;
+  },
+  &quot;exposure&quot;: &quot;An approval for one ticket is applied to a different ticket.&quot;,
+  &quot;fix&quot;: &quot;Bind approval to the principal and exact operation arguments.&quot;,
+  &quot;grants&quot;: [
+    {
+      &quot;active&quot;: true,
+      &quot;chunk_id&quot;: &quot;sha256:88b02b2f7c7114c3695480a83a0f8ed066e958c7c74ea382909178047450874d&quot;,
+      &quot;credential_id&quot;: &quot;9a959690-06b2-4b13-b5b7-e4f2f3f35303&quot;,
+      &quot;expires_ns&quot;: 4068789854096,
+      &quot;parent&quot;: null,
+      &quot;principal&quot;: &quot;agent-001&quot;,
+      &quot;scope&quot;: &quot;synthetic-ticket:update&quot;
+    },
+    {
+      &quot;active&quot;: true,
+      &quot;chunk_id&quot;: &quot;sha256:6833cf952911d407d7b0b59c88330ff570b1b4222683c178f62f4462eb9d7e83&quot;,
+      &quot;credential_id&quot;: &quot;0859f175-35fb-47bf-9978-a8d8622ee313&quot;,
+      &quot;expires_ns&quot;: 4068815311196,
+      &quot;parent&quot;: &quot;agent-001&quot;,
+      &quot;principal&quot;: &quot;child-001&quot;,
+      &quot;scope&quot;: &quot;synthetic-ticket:update&quot;
+    },
+    {
+      &quot;active&quot;: true,
+      &quot;chunk_id&quot;: &quot;sha256:6d825ee00312d9c15e1e94f7f4c3adc1a9990fe36c69074b94f18d3da58f87b8&quot;,
+      &quot;credential_id&quot;: &quot;df7e0769-5c44-430b-adea-237f9073e281&quot;,
+      &quot;expires_ns&quot;: 4068820918504,
+      &quot;parent&quot;: null,
+      &quot;principal&quot;: &quot;queue-worker&quot;,
+      &quot;scope&quot;: &quot;synthetic-ticket:update&quot;
+    }
+  ],
+  &quot;initial&quot;: {
+    &quot;after_chunk_id&quot;: &quot;sha256:6c924e2ab40fd8fd9f2e402735394e5c3187853ae534e6f6e4d6ddfc5edcd2df&quot;,
+    &quot;before_chunk_id&quot;: &quot;sha256:d11ed70dd8263d61d4a5264f4f6aa52731a72069983181c3f47e294954227cbd&quot;,
+    &quot;http_status&quot;: 200,
+    &quot;observation&quot;: &quot;succeeded&quot;,
+    &quot;observation_chunk_id&quot;: &quot;sha256:963828d8b5fc5933fe69de9375f825e53f4787f9fa7f6beb1cd7df7265f87403&quot;,
+    &quot;phase&quot;: &quot;initial_control&quot;,
+    &quot;principal&quot;: &quot;agent-001&quot;,
+    &quot;reason&quot;: null,
+    &quot;receipt_chunk_id&quot;: &quot;sha256:772277c218d726ffbd63ee328571f66fbce3134ccdf05fdbac59627e89bb7bc5&quot;,
+    &quot;request_id&quot;: &quot;02ac915b-d1bd-46b8-bc02-2fd1a3c2eb2f&quot;,
+    &quot;round_trip_ms&quot;: 13.922,
+    &quot;since_boundary_ms&quot;: 19.956,
+    &quot;state_delta&quot;: 1,
+    &quot;ticket&quot;: &quot;TICKET-002&quot;
+  },
+  &quot;initial_boundary_chunk_id&quot;: &quot;sha256:c26d273c28571732512760840c4543fa8374cfb958514d74d81caa9230ab3ed3&quot;,
+  &quot;initial_control&quot;: &quot;failed&quot;,
+  &quot;mode&quot;: &quot;running-local-services&quot;,
+  &quot;owner&quot;: &quot;Approval service owner&quot;,
+  &quot;remediated_control&quot;: &quot;observed_denied&quot;,
+  &quot;remediation_chunk_id&quot;: &quot;sha256:722fa4ddcb031cf089f34b22ba5ce44793ae2ee216f052855b4c77a42e772069&quot;,
+  &quot;retest&quot;: {
+    &quot;after_chunk_id&quot;: &quot;sha256:b747c1b6005158442b6e4b4bd6723110c107f67307dd7dc90d744b9c2a0c9a0b&quot;,
+    &quot;before_chunk_id&quot;: &quot;sha256:5bf1ae91a61bf5431d5ae087f07eb1614151c9ad77ae12aa37564530741b7a17&quot;,
+    &quot;http_status&quot;: 403,
+    &quot;observation&quot;: &quot;denied&quot;,
+    &quot;observation_chunk_id&quot;: &quot;sha256:cf187e1c843dbd41d5205c9593b06e9c63679fb392492ba7af6266a62e534ce9&quot;,
+    &quot;phase&quot;: &quot;remediated_control&quot;,
+    &quot;principal&quot;: &quot;agent-001&quot;,
+    &quot;reason&quot;: &quot;approval_scope_changed&quot;,
+    &quot;receipt_chunk_id&quot;: &quot;sha256:738d2f14cbb56461ac567c4b9270616fee24e9986e54042ca4988acec0ca2907&quot;,
+    &quot;request_id&quot;: &quot;5b46f08b-5cd2-4615-bd40-cadacf1df495&quot;,
+    &quot;round_trip_ms&quot;: 11.313,
+    &quot;since_boundary_ms&quot;: 18.651,
+    &quot;state_delta&quot;: 0,
+    &quot;ticket&quot;: &quot;TICKET-002&quot;
+  },
+  &quot;scenario&quot;: &quot;approval_scope&quot;,
+  &quot;title&quot;: &quot;Changed action scope&quot;,
+  &quot;untested&quot;: [
+    &quot;production deployments&quot;,
+    &quot;other credentials and resources&quot;,
+    &quot;future executions outside the observation window&quot;,
+    &quot;stochastic model behavior&quot;
+  ]
+}</pre></details></article><h2>Evidence and exports</h2><p><a href="results.json">Structured results</a> · <a href="events.jsonl">Witness events</a> · <a href="authority.json">Authority graph</a> · <a href="chunk-index.json">Chunk byte index</a> · <a href="afr-events.jsonl">Forensic Readiness projection</a></p><p class="muted">The graph contains declared lab grants and observed operations. It is not a discovery scan of enterprise permissions.</p><h2>Interpretation limits</h2><ul><li>Synthetic tickets and principals; real local HTTP/MCP execution.</li><li>Scripted agent; no language model or provider was invoked.</li><li>All local services share an OS account; witness isolation is process-level only.</li><li>A denied probe applies only to the tested path and observation window.</li><li>Human reviewer identities are synthetic; effective human judgment was not measured.</li><li>Time values are local monotonic observations, not trusted timestamps.</li></ul><p class="muted">Run ID: <code>22d75807-f7ef-461e-9ac7-82a020e1a466</code></p><footer>TraceBound · Dr. Stephen Coston · 2026-09-09T10:10:31.770638+00:00<br>Verify the complete evidence bundle before relying on this presentation. Hashes and signatures establish bounded integrity properties; they do not establish source truth or complete containment.</footer></main><script>document.getElementById('scenario-filter')?.addEventListener('change',function(){document.querySelectorAll('[data-scenario]').forEach(card=>{card.hidden=this.value!=='all'&&card.dataset.scenario!==this.value;});});document.getElementById('print-report')?.addEventListener('click',()=>window.print());</script></body></html>

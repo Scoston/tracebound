@@ -1,0 +1,23 @@
+[build-system]
+requires = ["setuptools>=68"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "tracebound"
+version = "0.1.0"
+description = "Measure AI agent containment with running services and evidence-bound results"
+readme = "README.md"
+requires-python = ">=3.11"
+license = {text = "Apache-2.0"}
+authors = [{name = "Stephen Coston"}]
+dependencies = []
+
+[project.optional-dependencies]
+signing = ["cryptography>=46.0.0,<47"]
+
+[project.scripts]
+tracebound = "tracebound.cli:main"
+
+[tool.setuptools.packages.find]
+include = ["tracebound*"]
+
